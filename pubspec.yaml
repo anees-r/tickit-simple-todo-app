@@ -72,8 +72,6 @@ flutter:
     - family: Hoves
       fonts:
         - asset: assets/fonts/TT-Hoves-Pro-Regular.ttf
-        - asset: assets/fonts/TT-Hoves-Pro-Medium.ttf
-          #weight: 300
         - asset: assets/fonts/TT-Hoves-Pro-Bold.ttf
           #weight: 700
 

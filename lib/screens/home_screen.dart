@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simple_todo_app/app_assets.dart';
 import 'package:simple_todo_app/services/theme_data_service.dart';
+import 'package:simple_todo_app/widgets/todo_item.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late Color textColor;
   late Color iconColor;
 
+
   Future<void> _loadThemePreference() async {
     _isDarkMode = await _themeDataService.getThemeMode();
     setState(() {});
@@ -35,21 +37,26 @@ class _HomeScreenState extends State<HomeScreen> {
     await _themeDataService.saveThemeMode(_isDarkMode);
   }
 
-  @override
-  void initState() {
-    _loadThemePreference();
-    _updateThemeColors();
-    super.initState();
-  }
+  // upadting colors according to theme
 
-  _updateThemeColors(){
+   _updateThemeColors(){
     setState(() {
-      // upadting colors according to theme
       backgroundColor = _isDarkMode ? AppAssets.darkBackgroundColor: AppAssets.lightBackgroundColor;
       cardColor = _isDarkMode ? AppAssets.darkCardColor: AppAssets.lightCardColor;
       textColor = _isDarkMode ? AppAssets.darkTextColor: AppAssets.lightTextColor;
       iconColor = _isDarkMode ? AppAssets.darkIconColor: AppAssets.lightIconColor;
     });
+  }
+
+  bool getThemeVariable(){
+    return _isDarkMode;
+  }
+
+  @override
+  void initState() {
+    _loadThemePreference();
+    _updateThemeColors();
+    super.initState();
   }
 
   // main widget
@@ -67,10 +74,30 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const SizedBox(height: 10),
             _buildSearchBar(),
-          ],
-        ),
-      ),
-    );
+            Expanded(
+              child: ListView(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Text(
+                      "All ToDos",
+                      style: TextStyle(
+                        fontFamily: "Hoves",
+                        fontSize: 25,
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const ToDoItem(),
+                ],             
+                )
+              ),
+          ]
+            )
+          
+        )
+      );
   }
 
   Container _buildSearchBar() {
@@ -84,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
         cursorColor: AppAssets.mainIconColor,
         style: TextStyle(
           fontFamily: "Hoves",
-          fontSize: 20,
+          fontSize: 16,
           color: textColor,
         ),
         decoration: InputDecoration(
@@ -103,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
             hintText: "Search",
             hintStyle: TextStyle(
               fontFamily: "Hoves",
-              fontSize: 20,
+              fontSize: 16,
               color: textColor.withOpacity(0.4),
             )),
       ),
@@ -146,8 +173,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
               },
               activeColor: AppAssets.darkBackgroundColor,
-              activeTrackColor: AppAssets.mainIconColor,
-              inactiveThumbColor: AppAssets.lightTextColor,
+              activeTrackColor: AppAssets.lightBackgroundColor,
+              inactiveThumbColor: AppAssets.darkBackgroundColor,
             ),
           )
         ],
