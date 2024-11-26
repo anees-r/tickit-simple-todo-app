@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:simple_todo_app/screens/home_screen.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
   runApp(const MyApp());
 }
 

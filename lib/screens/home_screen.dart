@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:simple_todo_app/app_assets.dart';
+import 'package:simple_todo_app/services/theme_data_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,24 +13,52 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // theme identifier
   bool _isDarkMode = false;
+  // calling ThemeDataService to fetch user preference
+  final ThemeDataService _themeDataService = ThemeDataService();
 
-  // upadting colors according to theme
-  Color backgroundColor = AppAssets.lightBackgroundColor;
-  Color cardColor = AppAssets.lightCardColor;
-  Color textColor = AppAssets.lightTextColor;
-  Color iconColor = AppAssets.lightIconColor;
+  // defining theme colors
+  late Color backgroundColor;
+  late Color cardColor;
+  late Color textColor;
+  late Color iconColor;
+
+  Future<void> _loadThemePreference() async {
+    _isDarkMode = await _themeDataService.getThemeMode();
+    setState(() {});
+  }
+
+  // Toggle and save theme preference
+  Future<void> _toggleTheme(bool value) async {
+    setState(() {
+      _isDarkMode = value;
+    });
+    await _themeDataService.saveThemeMode(_isDarkMode);
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
+    _loadThemePreference();
+    _updateThemeColors();
     super.initState();
+  }
+
+  _updateThemeColors(){
+    setState(() {
+      // upadting colors according to theme
+      backgroundColor = _isDarkMode ? AppAssets.darkBackgroundColor: AppAssets.lightBackgroundColor;
+      cardColor = _isDarkMode ? AppAssets.darkCardColor: AppAssets.lightCardColor;
+      textColor = _isDarkMode ? AppAssets.darkTextColor: AppAssets.lightTextColor;
+      iconColor = _isDarkMode ? AppAssets.darkIconColor: AppAssets.lightIconColor;
+    });
   }
 
   // main widget
 
   @override
   Widget build(BuildContext context) {
+    _updateThemeColors();
     return Scaffold(
+
       backgroundColor: backgroundColor,
       appBar: _buildAppBar(),
       body: Container(
@@ -113,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
               value: _isDarkMode,
               onChanged: (bool value) {
                 setState(() {
-                  _isDarkMode = value;
+                  _toggleTheme(value);
                 });
               },
               activeColor: AppAssets.darkBackgroundColor,
