@@ -11,14 +11,12 @@ class AppAssets {
   static Color lightBackgroundColor = const Color(0xFFe4e4e4);
   static Color lightCardColor = const Color(0xFFffffff);
   static Color lightTextColor = const Color(0xFF181818);
-  static Color lightIconColor = const Color(0xFFdddddd);
 
   // dark mode colors
 
   static Color darkBackgroundColor = const Color(0xFF181818);
   static Color darkCardColor = const Color(0xFF333333);
   static Color darkTextColor = const Color(0xFFe4e4e4);
-  static Color darkIconColor = const Color(0xFF4d4d4d);
 
   // icons
 

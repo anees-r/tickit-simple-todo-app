@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_todo_app/screens/home_screen.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:simple_todo_app/screens/loading_screen.dart';
 
 Future<void> main() async {
   await Hive.initFlutter();
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Simple ToDo App',
-      home: HomeScreen(), // running the homescreen class on startup
+      home: LoadingScreen(), // running the homescreen class on startup
     );
   }
 }
