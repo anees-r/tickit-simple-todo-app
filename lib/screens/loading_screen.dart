@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:simple_todo_app/app_assets.dart';
+import 'package:simple_todo_app/models/todo_model.dart';
 import 'package:simple_todo_app/screens/home_screen.dart';
 import 'package:simple_todo_app/services/theme_data_service.dart';
 
@@ -26,7 +28,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
     _loadThemePreference();
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () async {
+      await Hive.openBox<ToDoModel>('todos');
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),

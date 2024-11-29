@@ -7,7 +7,8 @@ import 'package:simple_todo_app/services/theme_data_service.dart';
 class ToDoItem extends StatefulWidget {
   final ToDoModel todo;
   final void Function(String?) onDelete;
-  const ToDoItem({super.key, required this.todo, required this.onDelete});
+  final void Function(ToDoModel) onChanged;
+  const ToDoItem({super.key, required this.todo, required this.onDelete, required this.onChanged});
 
   @override
   State<ToDoItem> createState() => _ToDoItemState();
@@ -22,16 +23,7 @@ class _ToDoItemState extends State<ToDoItem> {
   
 
   // changing todo based on tap
-  void _handleToDoChange(ToDoModel todo) {
-    // DateTime now = DateTime.now();
-    // DateTime yesterday = now.subtract(const Duration(days: 1));
-    setState(() {
-      // if(todo.isDone == false){
-      //   todo.id = yesterday.microsecondsSinceEpoch.toString();
-      // }
-      todo.isDone = !todo.isDone;
-    });
-  }
+  
 
   // loading and updating theme colors
   Future<void> _loadThemePreference() async {
@@ -56,7 +48,7 @@ class _ToDoItemState extends State<ToDoItem> {
         margin: const EdgeInsets.only(bottom: 15),
         child: ListTile(
             onTap: () {
-              _handleToDoChange(widget.todo);
+              widget.onChanged(widget.todo);
             },
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

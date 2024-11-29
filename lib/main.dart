@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:simple_todo_app/screens/home_screen.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:simple_todo_app/models/todo_model.dart';
 import 'package:simple_todo_app/screens/loading_screen.dart';
 
 Future<void> main() async {
-  await Hive.initFlutter();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter(); // Initialize Hive
+  Hive.registerAdapter(ToDoModelAdapter()); // Register the generated adapter
+  await Hive.openBox<ToDoModel>('todos');
+
   runApp(const MyApp());
 }
 
