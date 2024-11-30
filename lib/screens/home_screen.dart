@@ -5,7 +5,6 @@ import 'package:simple_todo_app/app_assets.dart';
 import 'package:simple_todo_app/models/todo_model.dart';
 import 'package:simple_todo_app/services/theme_data_service.dart';
 import 'package:simple_todo_app/services/todo_service.dart';
-import 'package:simple_todo_app/widgets/todo_item.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -262,13 +261,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                for (ToDoModel todo in foundTodo)
-                  //numbers.sort((a, b) => b.compareTo(a))
-                  ToDoItem(
-                    todo: todo,
-                    onDelete: _handleDelete,
-                    onChanged: _handleToDoChange,
-                  ),
+                for (ToDoModel eachtodo in foundTodo)
+                  // building todo tile
+                  _buildToDoTile(eachtodo),
               ],
             ),
           )),
@@ -341,6 +336,50 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  Container _buildToDoTile(ToDoModel todo){
+    return Container(
+      margin: const EdgeInsets.only(bottom: 15),
+        child: ListTile(
+            onTap: () {
+              _handleToDoChange(todo);
+            },
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+            tileColor: cardColor,
+            leading: Icon(
+              todo.isDone
+                  ? Icons.check_box
+                  : Icons.check_box_outline_blank,
+              color: AppAssets.mainIconColor,
+            ),
+            title: Text(
+              todo.todoText!,
+              style: TextStyle(
+                fontFamily: "Hoves",
+                fontSize: 16,
+                color: textColor,
+                decoration:
+                    todo.isDone ? TextDecoration.lineThrough : null,
+                decorationColor: textColor,
+              ),
+            ),
+            trailing: Container(
+                child: IconButton(
+              icon: SvgPicture.asset(
+                AppAssets.deleteIcon,
+                width: 22,
+                height: 22,
+                color: textColor.withOpacity(0.5),
+              ),
+              onPressed: () {
+                _handleDelete(todo.id);
+                print("${todo.id} passed to delete method");
+              },
+            ))));
   }
 
   // method to build searchbar
