@@ -72,6 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void deleteToDo(String? id) {
     String idNotNull = id!;
     final box = ToDoService.getBox();
+    print("Key to delete: $id");
+  print("All keys in box: ${box.keys.toList()}");
     box.delete(idNotNull);
     setState(() {
       todosList = box.values.toList(); // Update todosList
@@ -102,6 +104,13 @@ class _HomeScreenState extends State<HomeScreen> {
         todo.id = result.toString();
       }
       todo.isDone = !todo.isDone;
+      print("new id is ${todo.id}");
+
+      // Save the updated todo back to Hive
+      final box = ToDoService.getBox(); // Your Hive box instance
+      box.delete(idStr);
+      box.put(todo.id, todo);
+
     });
     // Re-fetch todos from Hive after deletion
     setState(() {

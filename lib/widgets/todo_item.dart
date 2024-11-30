@@ -82,6 +82,7 @@ class _ToDoItemState extends State<ToDoItem> {
               ),
               onPressed: () {
                 widget.onDelete(widget.todo.id);
+                print("${widget.todo.id} passed to delete method");
               },
             ))));
   }
